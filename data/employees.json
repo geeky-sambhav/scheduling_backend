@@ -20,13 +20,13 @@
   {
     "id": "emp-004",
     "name": "Emily Brown",
-    "role": "Operator",
+    "role": "TCP",
     "availability": false
   },
   {
     "id": "emp-005",
     "name": "David Wilson",
-    "role": "Technician",
+    "role": "LCT",
     "availability": true
   }
 ]

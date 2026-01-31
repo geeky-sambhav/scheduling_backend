@@ -7,85 +7,68 @@ Handles all employee-related operations including:
 - Computing employee statistics
 """
 
-from typing import List, Optional
-
-from flask import current_app
-
+from typing import List, Optional, Tuple, Dict, Any
 from app.models import Employee
-from app.services.data_service import read_json_file
-from app.utils.exceptions import ResourceNotFoundError
+from app.repositories import EmployeeRepository
 
 
-VALID_ROLES = ['TCP', 'LCT', 'Supervisor']
+VALID_ROLES = ["TCP", "LCT", "Supervisor"]
 
 
-class InvalidRoleError(Exception):
-    """Raised when an invalid role is provided."""
-    
-    def __init__(self, role: str):
-        self.role = role
-        self.valid_roles = VALID_ROLES
-        super().__init__(f"Invalid role '{role}'. Must be one of: {', '.join(VALID_ROLES)}")
+# Shared repository instance
+_employee_repo = EmployeeRepository()
 
 
-def _load_employees() -> List[Employee]:
-    """Load all employees as Pydantic model instances."""
-    data = read_json_file(current_app.config['EMPLOYEES_FILE'])
-    return [Employee(**emp) for emp in data]
+def get_employee_repository() -> EmployeeRepository:
+    """Get the employee repository instance."""
+    return _employee_repo
 
 
 class EmployeeService:
     """Service layer for employee business logic."""
-    
+
+    def __init__(self, repository: EmployeeRepository = None):
+        """
+        Initialize the service with a repository.
+
+        Args:
+            repository: Optional repository instance (uses default if not provided)
+        """
+        self.repository = _employee_repo
+
     def get_all_employees(
         self,
-        available: Optional[bool] = None,
-        role: Optional[str] = None
-    ) -> List[Employee]:
+    ) -> Tuple[Optional[List[Employee]], Optional[Dict[str, Any]]]:
         """
-        Get all employees with optional filtering.
-        
-        Args:
-            available: Filter by availability (True/False/None for all)
-            role: Filter by role (TCP/LCT/Supervisor)
-        
+        Get all employees.
         Returns:
-            List of filtered Employee objects
-        
-        Raises:
-            InvalidRoleError: If an invalid role is provided
+            Tuple of (List[Employee], None) on success
+            Tuple of (None, error_dict) on failure
         """
-        employees = _load_employees()
-        
-        # Filter by availability
-        if available is not None:
-            employees = [emp for emp in employees if emp.availability == available]
-        
-        # Filter by role
-        if role is not None:
-            if role not in VALID_ROLES:
-                raise InvalidRoleError(role)
-            employees = [emp for emp in employees if emp.role == role]
-        
-        return employees
-    
-    def get_employee_by_id(self, employee_id: str) -> Employee:
+        employees = self.repository.get_all()
+
+        return employees, None
+
+    def get_employee_by_id(
+        self, employee_id: str
+    ) -> Tuple[Optional[Employee], Optional[Dict[str, Any]]]:
         """
         Get a single employee by ID.
-        
+
         Args:
             employee_id: Unique employee identifier
-        
+
         Returns:
-            Employee object
-        
-        Raises:
-            ResourceNotFoundError: If employee not found
+            Tuple of (Employee, None) on success
+            Tuple of (None, error_dict) on failure
         """
-        employees = _load_employees()
-        employee = next((e for e in employees if e.id == employee_id), None)
-        
+        employee = self.repository.get_by_id(employee_id)
+
         if not employee:
-            raise ResourceNotFoundError("Employee", employee_id)
-        
-        return employee
+            return None, {
+                "error_type": "EmployeeNotFound",
+                "message": f"Employee with id '{employee_id}' not found",
+                "status_code": 404,
+            }
+
+        return employee, None

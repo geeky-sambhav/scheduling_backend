@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "id": "ASSIGN0DCF69F5",
+    "employeeId": "emp-001",
+    "jobId": "job-002",
+    "assignedAt": "2026-02-01T02:12:14.500542"
+  }
+]

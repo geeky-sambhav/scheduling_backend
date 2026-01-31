@@ -2,37 +2,37 @@
   {
     "id": "job-001",
     "name": "Morning Shift - Assembly Line A",
-    "startTime": "06:00",
-    "endTime": "10:00"
+    "startTime": "2026-01-31T06:00:00",
+    "endTime": "2026-01-31T10:00:00"
   },
   {
     "id": "job-002",
     "name": "Morning Shift - Assembly Line B",
-    "startTime": "06:00",
-    "endTime": "10:00"
+    "startTime": "2025-02-05T06:00:00",
+    "endTime": "2025-02-05T10:00:00"
   },
   {
     "id": "job-003",
     "name": "Midday Maintenance",
-    "startTime": "10:00",
-    "endTime": "12:00"
+    "startTime": "2025-02-05T06:00:00",
+    "endTime": "2025-02-05T10:00:00"
   },
   {
     "id": "job-004",
     "name": "Afternoon Shift - Packaging",
-    "startTime": "12:00",
-    "endTime": "16:00"
+    "startTime": "2026-01-31T12:00:00",
+    "endTime": "2026-01-31T16:00:00"
   },
   {
     "id": "job-005",
     "name": "Evening Quality Control",
-    "startTime": "16:00",
-    "endTime": "20:00"
+    "startTime": "2026-01-31T16:00:00",
+    "endTime": "2026-01-31T20:00:00"
   },
   {
     "id": "job-006",
     "name": "Night Shift - Warehouse",
-    "startTime": "20:00",
-    "endTime": "06:00"
+    "startTime": "2026-01-31T20:00:00",
+    "endTime": "2026-02-01T06:00:00"
   }
 ]
