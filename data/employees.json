@@ -1,0 +1,32 @@
+[
+  {
+    "id": "emp-001",
+    "name": "John Smith",
+    "role": "TCP",
+    "availability": true
+  },
+  {
+    "id": "emp-002",
+    "name": "Sarah Johnson",
+    "role": "LCT",
+    "availability": true
+  },
+  {
+    "id": "emp-003",
+    "name": "Mike Davis",
+    "role": "Supervisor",
+    "availability": true
+  },
+  {
+    "id": "emp-004",
+    "name": "Emily Brown",
+    "role": "Operator",
+    "availability": false
+  },
+  {
+    "id": "emp-005",
+    "name": "David Wilson",
+    "role": "Technician",
+    "availability": true
+  }
+]
