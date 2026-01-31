@@ -41,14 +41,7 @@ class Assignment(BaseModel):
 
     class Config:
         validate_assignment = True
-        json_schema_extra = {
-            "example": {
-                "id": "ASSIGN001",
-                "employeeId": "EMP001",
-                "jobId": "JOB001",
-                "assignedAt": "2024-01-30T07:30:00",
-            }
-        }
+      
 
 
 class AssignmentWithDetails(BaseModel):
@@ -64,25 +57,8 @@ class AssignmentWithDetails(BaseModel):
     employee: Optional["EmployeeBasic"] = None
     job: Optional["JobBasic"] = None
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "id": "ASSIGN001",
-                "employeeId": "EMP001",
-                "jobId": "JOB001",
-                "assignedAt": "2024-01-30T07:30:00",
-                "employee": {"id": "EMP001", "name": "John Doe", "role": "TCP"},
-                "job": {
-                    "id": "JOB001",
-                    "name": "Morning Shift",
-                    "startTime": "2024-01-30T08:00:00",
-                    "endTime": "2024-01-30T16:00:00",
-                },
-            }
-        }
+   
 
-
-# Lightweight models for nested responses (avoid circular imports)
 class EmployeeBasic(BaseModel):
     """Basic employee info for nested responses."""
 

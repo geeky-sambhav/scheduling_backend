@@ -48,15 +48,7 @@ class Employee(BaseModel):
         # Allow validation on assignment
         validate_assignment = True
 
-        # Example for documentation
-        json_schema_extra = {
-            "example": {
-                "id": "EMP001",
-                "name": "John Doe",
-                "role": "TCP",
-                "availability": True,
-            }
-        }
+       
 
     def mark_unavailable(self) -> None:
         """Mark employee as unavailable."""

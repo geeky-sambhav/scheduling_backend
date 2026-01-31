@@ -10,15 +10,8 @@ class SuccessResponse(BaseModel):
     message: str
     data: Optional[Any] = None
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "success": True,
-                "message": "Assignment created successfully",
-                "data": {"id": "ASSIGN001"},
-                "timestamp": "2024-01-30T08:00:00",
-            }
-        }
+  
+       
 
 
 class ErrorResponse(BaseModel):
@@ -32,26 +25,7 @@ class ErrorResponse(BaseModel):
     )
     timestamp: datetime = Field(default_factory=datetime.now)
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "success": False,
-                "error": "TimeConflict",
-                "message": "Employee is already assigned to another job during this time",
-                "details": {
-                    "conflicts": [
-                        {
-                            "assignmentId": "ASSIGN001",
-                            "jobName": "Morning Shift",
-                            "timeRange": "08:00-16:00",
-                        }
-                    ]
-                },
-                "timestamp": "2024-01-30T08:00:00",
-            }
-        }
-
-
+    
 class ValidationErrorDetail(BaseModel):
     """Individual validation error detail."""
 

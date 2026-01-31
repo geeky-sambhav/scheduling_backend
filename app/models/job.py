@@ -11,7 +11,7 @@ class Job(BaseModel):
 
 
 
-    
+
     """
     Job model with time validation and conflict detection support.
 
@@ -59,14 +59,7 @@ class Job(BaseModel):
 
     class Config:
         validate_assignment = True
-        json_schema_extra = {
-            "example": {
-                "id": "JOB001",
-                "name": "Morning Shift - Assembly Line",
-                "startTime": "2024-01-30T08:00:00",
-                "endTime": "2024-01-30T16:00:00",
-            }
-        }
+       
 
     def get_duration_hours(self) -> float:
         """Calculate job duration in hours."""
