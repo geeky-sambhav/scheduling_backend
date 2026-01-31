@@ -1,20 +1,27 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from typing import List, Optional, Any, Dict
 from datetime import datetime
 
 
-class SuccessResponse(BaseModel):
+class BaseResponse(BaseModel):
+    """Base response model that excludes None fields from serialization."""
+
+    def model_dump(self, **kwargs) -> Dict[str, Any]:
+        """Override to exclude None values by default."""
+        kwargs.setdefault("exclude_none", True)
+        return super().model_dump(**kwargs)
+
+
+class SuccessResponse(BaseResponse):
     """Standard success response wrapper."""
 
     success: bool = Field(default=True)
-    message: str
+    count: Optional[int] = None
+    message: Optional[str] = None
     data: Optional[Any] = None
 
-  
-       
 
-
-class ErrorResponse(BaseModel):
+class ErrorResponse(BaseResponse):
     """Standard error response wrapper."""
 
     success: bool = Field(default=False)
@@ -25,7 +32,7 @@ class ErrorResponse(BaseModel):
     )
     timestamp: datetime = Field(default_factory=datetime.now)
 
-    
+
 class ValidationErrorDetail(BaseModel):
     """Individual validation error detail."""
 
@@ -34,7 +41,7 @@ class ValidationErrorDetail(BaseModel):
     type: str
 
 
-class ValidationErrorResponse(BaseModel):
+class ValidationErrorResponse(BaseResponse):
     """Response for validation errors (422)."""
 
     success: bool = Field(default=False)
@@ -54,7 +61,7 @@ class ConflictDetail(BaseModel):
     endTime: datetime
 
 
-class TimeConflictResponse(BaseModel):
+class TimeConflictResponse(BaseResponse):
     """Specific response for time conflict errors."""
 
     success: bool = Field(default=False)

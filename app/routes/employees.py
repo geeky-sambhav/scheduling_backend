@@ -40,9 +40,7 @@ def get_all_employees():
             for emp in employees
         ]
 
-        response = SuccessResponse(
-            message=f"Retrieved {len(employees_data)} employee(s)", data=employees_data
-        )
+        response = SuccessResponse(count=len(employees_data), data=employees_data)
 
         return jsonify(response.model_dump()), 200
 

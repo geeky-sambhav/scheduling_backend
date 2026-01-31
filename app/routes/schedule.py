@@ -41,7 +41,7 @@ def get_schedule():
         assignments_data = [a.model_dump() for a in enriched_assignments]
 
         response = SuccessResponse(
-            message=f"Retrieved {len(assignments_data)} assignment(s)",
+            count=len(assignments_data),
             data=assignments_data,
         )
 

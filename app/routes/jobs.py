@@ -8,7 +8,7 @@ Handles all job-related endpoints including:
 
 from flask import Blueprint, jsonify
 
-from app.models import ErrorResponse, SuccessResponse
+from app.models import SuccessResponse, ErrorResponse
 from app.services.job_service import JobService
 
 # Create blueprint
@@ -26,7 +26,8 @@ def get_all_jobs():
         jobs_data = [job.model_dump() for job in jobs]
 
         response = SuccessResponse(
-            message=f"Retrieved {len(jobs_data)} job(s)", data=jobs_data
+            count=len(jobs_data),
+            data=jobs_data,
         )
         return jsonify(response.model_dump()), 200
 
