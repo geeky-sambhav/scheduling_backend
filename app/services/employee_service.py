@@ -1,12 +1,3 @@
-"""
-Employee business logic service.
-
-Handles all employee-related operations including:
-- Retrieving employees with filtering
-- Getting individual employees by ID
-- Computing employee statistics
-"""
-
 from typing import List, Optional, Tuple, Dict, Any
 from app.models import Employee
 from app.repositories import EmployeeRepository
@@ -41,9 +32,6 @@ class EmployeeService:
     ) -> Tuple[Optional[List[Employee]], Optional[Dict[str, Any]]]:
         """
         Get all employees.
-        Returns:
-            Tuple of (List[Employee], None) on success
-            Tuple of (None, error_dict) on failure
         """
         employees = self.repository.get_all()
 
@@ -54,13 +42,6 @@ class EmployeeService:
     ) -> Tuple[Optional[Employee], Optional[Dict[str, Any]]]:
         """
         Get a single employee by ID.
-
-        Args:
-            employee_id: Unique employee identifier
-
-        Returns:
-            Tuple of (Employee, None) on success
-            Tuple of (None, error_dict) on failure
         """
         employee = self.repository.get_by_id(employee_id)
 

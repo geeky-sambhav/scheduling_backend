@@ -1,10 +1,3 @@
-"""
-Schedule API routes.
-
-Handles schedule-related endpoints:
-- Get current list of assignments with full details
-"""
-
 from flask import Blueprint, jsonify
 
 from app.models import ErrorResponse, SuccessResponse
@@ -21,18 +14,6 @@ schedule_service = ScheduleService()
 def get_schedule():
     """
     Get the current list of assignments with full employee and job details.
-
-    Returns:
-        200: List of assignments with enriched data
-        500: Server error
-
-    Response includes:
-        - Assignment details (id, assignedAt, notes)
-        - Employee details (id, name, role)
-        - Job details (id, name, startTime, endTime)
-
-    Example:
-        GET /schedule
     """
     try:
         enriched_assignments = schedule_service.get_enriched_assignments()

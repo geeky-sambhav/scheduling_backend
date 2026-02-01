@@ -1,7 +1,3 @@
-"""
-Application entry point for the Scheduling Backend.
-"""
-
 import os
 from dotenv import load_dotenv
 

@@ -12,7 +12,6 @@ class AssignmentCreateRequest(BaseModel):
     employeeId: str = Field(..., min_length=1, description="ID of employee to assign")
     jobId: str = Field(..., min_length=1, description="ID of job to assign to")
 
-   
 
 class EmployeeCreateRequest(BaseModel):
     """Request model for creating a new employee."""

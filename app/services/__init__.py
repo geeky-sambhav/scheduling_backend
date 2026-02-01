@@ -1,7 +1,3 @@
-"""
-Business logic services for the scheduling backend.
-"""
-
 from app.services.employee_service import EmployeeService, get_employee_repository
 from app.services.job_service import JobService, get_job_repository
 from app.services.assignment_service import AssignmentService

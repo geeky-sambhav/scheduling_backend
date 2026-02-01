@@ -1,13 +1,3 @@
-"""
-Job business logic service.
-
-Handles all job-related operations including:
-- Retrieving jobs with filtering
-- Getting individual jobs by ID
-- Finding upcoming jobs
-- Computing job statistics
-"""
-
 from typing import List, Optional, Dict, Any, Tuple
 from datetime import datetime
 
@@ -31,9 +21,6 @@ class JobService:
     def __init__(self, repository: JobRepository = None):
         """
         Initialize the service with a repository.
-
-        Args:
-            repository: Optional repository instance (uses default if not provided)
         """
         self.repository = repository or _job_repo
 
@@ -46,16 +33,6 @@ class JobService:
     ) -> Tuple[Optional[List[Job]], Optional[Dict[str, Any]]]:
         """
         Get all jobs with optional filtering.
-
-        Args:
-            start_date: Filter jobs starting after this date (ISO 8601 string)
-            end_date: Filter jobs ending before this date (ISO 8601 string)
-            min_duration: Minimum duration in hours (string to parse)
-            max_duration: Maximum duration in hours (string to parse)
-
-        Returns:
-            Tuple of (List[Job], None) on success
-            Tuple of (None, error_dict) on failure
         """
         jobs = self.repository.get_all()
 
@@ -121,13 +98,6 @@ class JobService:
     ) -> Tuple[Optional[Job], Optional[Dict[str, Any]]]:
         """
         Get a single job by ID.
-
-        Args:
-            job_id: Unique job identifier
-
-        Returns:
-            Tuple of (Job, None) on success
-            Tuple of (None, error_dict) on failure
         """
         job = self.repository.get_by_id(job_id)
 
@@ -146,12 +116,6 @@ class JobService:
         """
         Get a single job by ID with calculated duration.
 
-        Args:
-            job_id: Unique job identifier
-
-        Returns:
-            Tuple of (job_data_dict, None) on success
-            Tuple of (None, error_dict) on failure
         """
         job, error = self.get_job_by_id(job_id)
         if error:
@@ -164,13 +128,6 @@ class JobService:
     def get_upcoming_jobs(self, hours_ahead: int = 24) -> List[Job]:
         """
         Get jobs scheduled to start in the future.
-
-        Args:
-            hours_ahead: Number of hours to look ahead (currently unused,
-                        returns all future jobs sorted by soonest first)
-
-        Returns:
-            List of upcoming jobs, sorted by start time (soonest first)
         """
         jobs = self.repository.get_all()
         now = datetime.now()
@@ -186,14 +143,6 @@ class JobService:
     def get_statistics(self) -> Dict[str, Any]:
         """
         Calculate job statistics and summary.
-
-        Returns:
-            Dictionary containing:
-            - totalJobs: Total job count
-            - averageDurationHours: Average duration
-            - shortestDurationHours: Minimum duration
-            - longestDurationHours: Maximum duration
-            - totalHours: Sum of all durations
         """
         jobs = self.repository.get_all()
 

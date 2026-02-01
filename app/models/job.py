@@ -4,22 +4,8 @@ from uuid import uuid4
 
 
 class Job(BaseModel):
-
-
-
-
-
-
-
-
     """
     Job model with time validation and conflict detection support.
-
-    Attributes:
-        id: Unique identifier for the job
-        name: Descriptive name of the job/shift
-        startTime: ISO format start datetime
-        endTime: ISO format end datetime
     """
 
     id: str = Field(
@@ -59,7 +45,6 @@ class Job(BaseModel):
 
     class Config:
         validate_assignment = True
-       
 
     def get_duration_hours(self) -> float:
         """Calculate job duration in hours."""

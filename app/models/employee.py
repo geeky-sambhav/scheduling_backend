@@ -6,12 +6,6 @@ from uuid import uuid4
 class Employee(BaseModel):
     """
     Employee model with role-based validation and availability tracking.
-
-    Attributes:
-        id: Unique identifier for the employee
-        name: Full name of the employee
-        role: Job role (TCP, LCT, or Supervisor)
-        availability: Whether employee is available for assignment
     """
 
     id: str = Field(
@@ -47,8 +41,6 @@ class Employee(BaseModel):
     class Config:
         # Allow validation on assignment
         validate_assignment = True
-
-       
 
     def mark_unavailable(self) -> None:
         """Mark employee as unavailable."""

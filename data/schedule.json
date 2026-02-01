@@ -1,80 +1,8 @@
 [
   {
-    "id": "ASSIGN0DCF69F5",
-    "employeeId": "emp-001",
-    "jobId": "job-002",
-    "assignedAt": "2026-02-01T02:12:14.500542"
-  },
-  {
-    "id": "ASSIGNBA5BF448",
-    "employeeId": "emp-002",
-    "jobId": "job-003",
-    "assignedAt": "2026-02-01T04:12:55.903156"
-  },
-  {
-    "id": "ASSIGNAF8666F3",
-    "employeeId": "emp-003",
-    "jobId": "job-006",
-    "assignedAt": "2026-02-01T04:33:55.822299"
-  },
-  {
-    "id": "ASSIGN47AD7C79",
-    "employeeId": "emp-003",
-    "jobId": "job-003",
-    "assignedAt": "2026-02-01T04:47:56.352676"
-  },
-  {
-    "id": "ASSIGN8C51AA70",
-    "employeeId": "emp-003",
-    "jobId": "job-003",
-    "assignedAt": "2026-02-01T04:50:07.670913"
-  },
-  {
-    "id": "ASSIGNFE3F6618",
-    "employeeId": "emp-003",
-    "jobId": "job-003",
-    "assignedAt": "2026-02-01T04:51:16.983701"
-  },
-  {
-    "id": "ASSIGNC69FC80E",
-    "employeeId": "emp-003",
-    "jobId": "job-003",
-    "assignedAt": "2026-02-01T04:51:18.310036"
-  },
-  {
-    "id": "ASSIGN39BEE4C8",
-    "employeeId": "emp-003",
-    "jobId": "job-003",
-    "assignedAt": "2026-02-01T04:51:18.865281"
-  },
-  {
-    "id": "ASSIGN9DAF2561",
-    "employeeId": "emp-003",
-    "jobId": "job-003",
-    "assignedAt": "2026-02-01T04:51:19.248368"
-  },
-  {
-    "id": "ASSIGN69099D02",
-    "employeeId": "emp-003",
-    "jobId": "job-003",
-    "assignedAt": "2026-02-01T04:51:33.237677"
-  },
-  {
-    "id": "ASSIGNE0C35ACB",
-    "employeeId": "emp-003",
-    "jobId": "job-003",
-    "assignedAt": "2026-02-01T04:51:33.776130"
-  },
-  {
-    "id": "ASSIGN31EA1741",
-    "employeeId": "emp-003",
-    "jobId": "job-003",
-    "assignedAt": "2026-02-01T04:52:00.330880"
-  },
-  {
-    "id": "ASSIGNE2B35749",
+    "id": "ASSIGN9959039E",
     "employeeId": "emp-001",
     "jobId": "job-006",
-    "assignedAt": "2026-02-01T04:58:02.061716"
+    "assignedAt": "2026-02-01T05:19:17.405554"
   }
 ]

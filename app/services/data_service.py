@@ -1,8 +1,3 @@
-"""
-Core file I/O utilities for reading/writing JSON data files.
-Thread-safe operations with file locking.
-"""
-
 import json
 import logging
 from pathlib import Path
@@ -26,11 +21,7 @@ def read_json_file(file_path: Path) -> List[Dict[str, Any]]:
     """
     Read data from a JSON file with thread safety.
 
-    Args:
-        file_path: Path to the JSON file
 
-    Returns:
-        List of dictionaries from the JSON file (empty list if file doesn't exist)
     """
     lock = _get_lock(str(file_path))
 
@@ -48,10 +39,6 @@ def read_json_file(file_path: Path) -> List[Dict[str, Any]]:
 def write_json_file(file_path: Path, data: List[Dict[str, Any]]) -> None:
     """
     Write data to a JSON file with thread safety.
-
-    Args:
-        file_path: Path to the JSON file
-        data: List of dictionaries to write
     """
     lock = _get_lock(str(file_path))
 

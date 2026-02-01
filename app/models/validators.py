@@ -15,31 +15,13 @@ class TimeValidator:
     def check_overlap(
         start1: datetime, end1: datetime, start2: datetime, end2: datetime
     ) -> bool:
-        """
-        Check if two time ranges overlap.
-
-        Args:
-            start1: Start of first time range
-            end1: End of first time range
-            start2: Start of second time range
-            end2: End of second time range
-
-        Returns:
-            True if ranges overlap, False otherwise
-        """
+        """Check if two time ranges overlap."""
         return (start1 < end2) and (end1 > start2)
 
     @staticmethod
     def find_conflicts(job: Job, existing_jobs: List[Job]) -> List[Job]:
         """
-        Find all jobs that conflict with the given job.
-
-        Args:
-            job: Job to check for conflicts
-            existing_jobs: List of jobs to check against
-
-        Returns:
-            List of conflicting jobs
+        Find all jobs that conflict with the given jobs
         """
         conflicts = []
         for existing_job in existing_jobs:
@@ -55,14 +37,6 @@ class TimeValidator:
     ) -> List[Tuple[datetime, datetime]]:
         """
         Calculate available time slots given blocked jobs.
-
-        Args:
-            blocked_jobs: List of jobs that block time
-            start_date: Start of time range to consider
-            end_date: End of time range to consider
-
-        Returns:
-            List of (start, end) tuples representing free slots
         """
         # Sort jobs by start time
         sorted_jobs = sorted(blocked_jobs, key=lambda j: j.startTime)
@@ -88,15 +62,6 @@ class AssignmentValidator:
     def parse_datetime(dt_str: str) -> datetime:
         """
         Parse datetime string to datetime object.
-
-        Args:
-            dt_str: ISO 8601 datetime string
-
-        Returns:
-            datetime object
-
-        Raises:
-            ValueError: If string is not valid ISO 8601 format
         """
         try:
             # Try ISO format with timezone
@@ -109,11 +74,5 @@ class AssignmentValidator:
     def format_datetime(dt: datetime) -> str:
         """
         Format datetime object to ISO 8601 string.
-
-        Args:
-            dt: datetime object
-
-        Returns:
-            ISO 8601 formatted string
         """
         return dt.isoformat()

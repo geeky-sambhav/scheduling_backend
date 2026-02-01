@@ -7,16 +7,6 @@ from uuid import uuid4
 class Assignment(BaseModel):
     """
     Assignment model linking employees to jobs with timestamp tracking.
-
-
-
-
-
-    Attributes:
-        id: Unique identifier for the assignment
-        employeeId: Reference to Employee.id
-        jobId: Reference to Job.id
-        assignedAt: Timestamp when assignment was created
     """
 
     id: str = Field(
@@ -41,7 +31,6 @@ class Assignment(BaseModel):
 
     class Config:
         validate_assignment = True
-      
 
 
 class AssignmentWithDetails(BaseModel):
@@ -57,7 +46,6 @@ class AssignmentWithDetails(BaseModel):
     employee: Optional["EmployeeBasic"] = None
     job: Optional["JobBasic"] = None
 
-   
 
 class EmployeeBasic(BaseModel):
     """Basic employee info for nested responses."""

@@ -1,7 +1,3 @@
-"""
-Flask Application Factory
-"""
-
 import logging
 from flask import Flask, jsonify
 from flask_cors import CORS
@@ -15,12 +11,6 @@ from app.routes.assignment import assignments_bp
 def create_app(config_class=Config):
     """
     Application factory for creating Flask app instances.
-
-    Args:
-        config_class: Configuration class to use
-
-    Returns:
-        Flask application instance
     """
     app = Flask(__name__)
     app.config.from_object(config_class)

@@ -18,13 +18,6 @@ employee_service = EmployeeService()
 def get_all_employees():
     """
     Get all employees.
-
-    Returns:
-        200: List of employees with id, name, role, availability
-        500: Server error
-
-    Example:
-        GET /employees
     """
     try:
         employees, error = employee_service.get_all_employees()

@@ -1,13 +1,3 @@
-"""
-Pydantic models for the Employee Scheduler application.
-
-This module provides strongly-typed, validated data models for:
-- Employees
-- Jobs
-- Assignments
-- API requests and responses
-"""
-
 from app.models.employee import Employee
 from app.models.job import Job
 from app.models.assignment import (

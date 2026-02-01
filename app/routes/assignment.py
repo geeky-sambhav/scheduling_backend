@@ -1,11 +1,3 @@
-"""
-Assignment API routes.
-
-Handles assignment operations:
-- Create new assignment (POST /assign)
-- Delete assignment (DELETE /assign/:id)
-"""
-
 from flask import Blueprint, jsonify, request
 from pydantic import ValidationError
 from app.services.assignment_service import AssignmentService
@@ -17,10 +9,9 @@ from app.models import (
     ValidationErrorDetail,
 )
 
-# Create blueprint
 assignments_bp = Blueprint("assign", __name__)
 
-# Initialize service
+
 assignment_service = AssignmentService()
 
 
@@ -28,33 +19,6 @@ assignment_service = AssignmentService()
 def create_assignment():
     """
     Assign an employee to a job and write the result to a JSON file.
-
-    Business Rules Enforced:
-        - Rule 1: No Double Booking - An employee cannot be assigned to more than one job at the same time
-        - Rule 2: No Overlapping Time Slots - Employees cannot be assigned to jobs whose time windows overlap
-        - Rule 3: Availability Filtering - If an employee is marked unavailable, assignment is rejected
-
-    Request Body:
-        {
-            "employeeId": "EMP001",
-            "jobId": "JOB001"
-        }
-
-    Returns:
-        201: Assignment created successfully
-        400: Validation error or employee unavailable (Rule 3)
-        404: Employee or job not found
-        409: Time conflict detected (Rule 1 & 2)
-        500: Server error
-
-    Example:
-        POST /api/assignments/assign
-        Content-Type: application/json
-
-        {
-            "employeeId": "EMP001",
-            "jobId": "JOB001"
-        }
     """
     try:
         # Get and validate request data
@@ -118,17 +82,6 @@ def create_assignment():
 def delete_assignment(assignment_id: str):
     """
     Remove a schedule assignment and update the JSON file.
-
-    Path Parameters:
-        assignment_id (str): Unique assignment identifier
-
-    Returns:
-        200: Assignment deleted successfully
-        404: Assignment not found
-        500: Server error
-
-    Example:
-        DELETE /assign/ASSIGN001
     """
     try:
         # Delete assignment through service

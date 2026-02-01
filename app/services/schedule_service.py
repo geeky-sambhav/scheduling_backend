@@ -42,12 +42,6 @@ def get_assignment_repository() -> AssignmentRepository:
 def _parse_time(time_str: str) -> Tuple[int, int]:
     """
     Parse time string to hours and minutes.
-
-    Args:
-        time_str: Time in HH:MM format
-
-    Returns:
-        Tuple of (hours, minutes)
     """
     parts = time_str.split(":")
     return int(parts[0]), int(parts[1])
@@ -62,13 +56,6 @@ def _time_to_minutes(time_str: str) -> int:
 def _times_overlap(start1: str, end1: str, start2: str, end2: str) -> bool:
     """
     Check if two time ranges overlap.
-
-    Args:
-        start1, end1: First time range
-        start2, end2: Second time range
-
-    Returns:
-        True if the ranges overlap
     """
     start1_min = _time_to_minutes(start1)
     end1_min = _time_to_minutes(end1)
@@ -85,29 +72,11 @@ def _times_overlap(start1: str, end1: str, start2: str, end2: str) -> bool:
     return start1_min < end2_min and start2_min < end1_min
 
 
-# =============================================================================
-# Assignment validation and creation
-# =============================================================================
-
-
 def validate_assignment(
     employee_id: str, job_id: str
 ) -> Tuple[Optional[Tuple[Employee, Job]], Optional[Dict[str, Any]]]:
     """
     Validate that an assignment can be made.
-
-    Enforces:
-    - Rule 1: No Double Booking
-    - Rule 2: No Overlapping Time Slots
-    - Rule 3: Availability Filtering
-
-    Args:
-        employee_id: ID of the employee to assign
-        job_id: ID of the job to assign
-
-    Returns:
-        Tuple of ((employee, job), None) if validation passes
-        Tuple of (None, error_dict) if validation fails
     """
     # Get employee and validate existence
     employee = _employee_repo.get_by_id(employee_id)
@@ -136,25 +105,23 @@ def validate_assignment(
             "status_code": 400,
         }
 
-    # Get existing assignment for this employee (each employee has at most one)
-    existing_assignment = _assignment_repo.get_by_employee_id(employee_id)
+    # Rule 1: Check for double booking (same employee-job pair already exists)
+    if _assignment_repo.exists(employee_id, job_id):
+        logger.warning(
+            f"Assignment rejected (Double Booking): "
+            f"Employee {employee.name} already assigned to job {job.name}"
+        )
+        return None, {
+            "error_type": "DoubleBooking",
+            "message": f"Employee '{employee.name}' is already assigned to '{job.name}'",
+            "status_code": 409,
+        }
 
-    if existing_assignment:
+    # Rule 2: Check for time overlap with ALL existing assignments for this employee
+    existing_assignments = _assignment_repo.get_all_by_employee_id(employee_id)
+
+    for existing_assignment in existing_assignments:
         existing_job = _job_repo.get_by_id(existing_assignment.jobId)
-
-        # Rule 1: Check for double booking (same job)
-        if existing_assignment.jobId == job_id:
-            logger.warning(
-                f"Assignment rejected: Employee {employee.name} "
-                f"already assigned to job {job.name}"
-            )
-            return None, {
-                "error_type": "DoubleBooking",
-                "message": f"Employee '{employee.name}' is already assigned to '{job.name}' at this time",
-                "status_code": 409,
-            }
-
-        # Rule 2: Check for time overlap
         if existing_job and _times_overlap(
             job.startTime, job.endTime, existing_job.startTime, existing_job.endTime
         ):
@@ -176,16 +143,7 @@ def create_assignment(
     employee_id: str, job_id: str, notes: Optional[str] = None
 ) -> Tuple[Optional[Assignment], Optional[Dict[str, Any]]]:
     """
-    Create a new assignment after validation.
-
-    Args:
-        employee_id: ID of the employee to assign
-        job_id: ID of the job to assign
-        notes: Optional notes for the assignment
-
-    Returns:
-        Tuple of (Assignment, None) on success
-        Tuple of (None, error_dict) on failure
+    Create a new assignment after validation
     """
     # Validate the assignment
     validation_result, error = validate_assignment(employee_id, job_id)
@@ -212,13 +170,6 @@ def delete_assignment(
 ) -> Tuple[Optional[bool], Optional[Dict[str, Any]]]:
     """
     Delete an assignment.
-
-    Args:
-        assignment_id: ID of the assignment to delete
-
-    Returns:
-        Tuple of (True, None) on success
-        Tuple of (None, error_dict) on failure
     """
     assignment = _assignment_repo.get_by_id(assignment_id)
     if not assignment:
@@ -237,9 +188,6 @@ def delete_assignment(
 def get_schedule_with_details() -> List[Dict[str, Any]]:
     """
     Get schedule with employee and job details included (dict format).
-
-    Returns:
-        List of assignments with employee and job information as dicts
     """
     assignments = _assignment_repo.get_all()
     detailed_schedule = []
@@ -258,11 +206,6 @@ def get_schedule_with_details() -> List[Dict[str, Any]]:
     return detailed_schedule
 
 
-# =============================================================================
-# Service class
-# =============================================================================
-
-
 class ScheduleService:
     """Service layer for schedule business logic."""
 
@@ -274,11 +217,6 @@ class ScheduleService:
     ):
         """
         Initialize the service with repositories.
-
-        Args:
-            employee_repo: Optional employee repository (uses default if not provided)
-            job_repo: Optional job repository (uses default if not provided)
-            assignment_repo: Optional assignment repository (uses default if not provided)
         """
         self.employee_repo = employee_repo or _employee_repo
         self.job_repo = job_repo or _job_repo
@@ -287,9 +225,6 @@ class ScheduleService:
     def get_enriched_assignments(self) -> List[AssignmentWithDetails]:
         """
         Get all assignments with full employee and job details.
-
-        Returns:
-            List of AssignmentWithDetails objects, sorted by assignedAt (most recent first)
         """
         assignments = self.assignment_repo.get_all()
         employees = self.employee_repo.get_all()

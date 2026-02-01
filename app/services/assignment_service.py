@@ -1,12 +1,3 @@
-"""
-Assignment service for handling employee-to-job assignments.
-
-Enforces business rules:
-- Rule 1: No Double Booking - Employee cannot be assigned to more than one job at the same time
-- Rule 2: No Overlapping Time Slots - Employees cannot be assigned to jobs whose time windows overlap
-- Rule 3: Availability Filtering - If an employee is unavailable, assignment is rejected
-"""
-
 import logging
 from typing import Optional, List, Tuple, Dict, Any
 from datetime import datetime
@@ -21,10 +12,7 @@ class AssignmentService:
     """
     Service layer for assignment business logic.
 
-    Enforces scheduling rules:
-    - Rule 1: No Double Booking
-    - Rule 2: No Overlapping Time Slots
-    - Rule 3: Availability Filtering
+
     """
 
     def __init__(
@@ -36,10 +24,7 @@ class AssignmentService:
         """
         Initialize the service with repositories.
 
-        Args:
-            employee_repo: Optional employee repository (uses default if not provided)
-            job_repo: Optional job repository (uses default if not provided)
-            assignment_repo: Optional assignment repository (uses default if not provided)
+
         """
         self.employee_repo = employee_repo or EmployeeRepository()
         self.job_repo = job_repo or JobRepository()
@@ -85,25 +70,23 @@ class AssignmentService:
                 "status_code": 400,
             }
 
-        # Get existing assignment for this employee (each employee has at most one)
-        existing_assignment = self.assignment_repo.get_by_employee_id(employee_id)
+        # Rule 1: Check for double booking (same employee-job pair already exists)
+        if self.assignment_repo.exists(employee_id, job_id):
+            logger.warning(
+                f"Assignment rejected (Double Booking): "
+                f"Employee {employee.name} already assigned to job {job.name}"
+            )
+            return None, {
+                "error_type": "DoubleBooking",
+                "message": f"Employee '{employee.name}' is already assigned to '{job.name}'",
+                "status_code": 409,
+            }
 
-        if existing_assignment:
+        # Rule 2: Check for time overlap with ALL existing assignments for this employee
+        existing_assignments = self.assignment_repo.get_all_by_employee_id(employee_id)
+
+        for existing_assignment in existing_assignments:
             existing_job = self.job_repo.get_by_id(existing_assignment.jobId)
-
-            # Rule 1: Check for double booking (same job)
-            if existing_assignment.jobId == job_id:
-                print("double booki-------------ng")
-                logger.warning(
-                    f"Employee {employee.name} already assigned to job {job.name}"
-                )
-                return None, {
-                    "error_type": "DoubleBooking",
-                    "message": f"Employee '{employee.name}' is already assigned to '{job.name}'",
-                    "status_code": 409,
-                }
-
-            # Rule 2: Check for time overlap
             if existing_job and self._times_overlap(
                 job.startTime, job.endTime, existing_job.startTime, existing_job.endTime
             ):
@@ -125,22 +108,7 @@ class AssignmentService:
         employee_id: str,
         job_id: str,
     ) -> Tuple[Optional[Assignment], Optional[Dict[str, Any]]]:
-        """
-        Create a new assignment after validation.
 
-        Enforces all business rules:
-        - Rule 1: No Double Booking
-        - Rule 2: No Overlapping Time Slots
-        - Rule 3: Availability Filtering
-
-        Args:
-            employee_id: ID of the employee to assign
-            job_id: ID of the job to assign
-
-        Returns:
-            Tuple of (Assignment, None) on success
-            Tuple of (None, error_dict) on failure
-        """
         # Validate the assignment
         validation_result, error = self._validate_assignment(employee_id, job_id)
         if error:
@@ -169,12 +137,6 @@ class AssignmentService:
         """
         Delete an assignment.
 
-        Args:
-            assignment_id: ID of the assignment to delete
-
-        Returns:
-            Tuple of (True, None) on success
-            Tuple of (None, error_dict) on failure
         """
         assignment = self.assignment_repo.get_by_id(assignment_id)
         if not assignment:
@@ -193,11 +155,7 @@ class AssignmentService:
         """
         Get the assignment for an employee.
 
-        Args:
-            employee_id: ID of the employee
 
-        Returns:
-            Assignment for the employee, or None if not found
         """
         return self.assignment_repo.get_by_employee_id(employee_id)
 
@@ -205,10 +163,5 @@ class AssignmentService:
         """
         Get an assignment by ID.
 
-        Args:
-            assignment_id: ID of the assignment
-
-        Returns:
-            Assignment if found, None otherwise
         """
         return self.assignment_repo.get_by_id(assignment_id)
