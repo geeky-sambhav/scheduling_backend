@@ -37,7 +37,7 @@ A Flask-based REST API for managing employee job assignments and scheduling. Thi
 ### Step 1: Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/geeky-sambhav/scheduling_backend
 cd scheduling_backend
 ```
 
